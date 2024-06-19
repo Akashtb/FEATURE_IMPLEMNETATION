@@ -5,7 +5,11 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    firstname: {
+    displayName: {
+        type: String,
+        required: true
+    },
+    firstName: {
         type: String,
         required: true
     },
@@ -15,6 +19,9 @@ const userSchema = mongoose.Schema({
     },
     age: {
         type: Number,
+    },
+    gender:{
+        type: String,
     },
     email: {
         type: String,
@@ -32,13 +39,13 @@ const userSchema = mongoose.Schema({
     district: {
         type: String,
     },
-    profilePicture: {
+    profilePic: {
         type: String,
     },
     qualification: {
         type: String,
     },
-    profession: {
+    professional: {
         type: String,
     },
     password: {
@@ -47,20 +54,20 @@ const userSchema = mongoose.Schema({
     confirmPassword: {
         type: String
     },
-    createdDate: {
-        type: Date.now,
-        default: Date.now
+    createdAt: {
+        type: Date,
+        default: Date.now,
     },
-    isAdmin:{
-        type:Boolean,
-        default:false
+    isAdmin: {
+        type: Boolean,
+        default: false
     },
-    isStaff:{
-        type:Boolean,
-        default:false
+    isStaff: {
+        type: Boolean,
+        default: false
     }
 
 })
 
-const User = mongoose.model('User',userSchema)
+const User = mongoose.model('User', userSchema)
 export default User;
