@@ -25,6 +25,7 @@ export default function (passport) {
                                 profilePic: profile.photos[0].value,
                                 email: profile.emails[0].value,
                                 qualification: "",
+                                
                                 professional: "",
                                 dateOfBirth: "",
                                 age: "",
