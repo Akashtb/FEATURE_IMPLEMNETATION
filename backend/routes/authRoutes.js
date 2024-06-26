@@ -2,6 +2,8 @@ import express from "express"
 import passport from "passport"
 import twilio from 'twilio'
 import dotenv from 'dotenv'
+import {Login, Register} from "../controllers/authControl.js"
+
 const router = express.Router()
 dotenv.config()
 
@@ -11,22 +13,23 @@ const authtoken = process.env.authtoken
 const client = twilio(accoundSid,authtoken)
 const otps = {};
 
-router.get('/login', (req, res) => {
-    res.send('Successfully login')
-})
+router.post('/login', Login)
 
-router.post('/register', (req, res) => {
-    res.json("Successfully Register")
-})
+router.put('/register/:userId', Register)
 
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get('/google/callback',
     passport.authenticate('google', { failureRedirect: 'http://localhost:8003/api/auth/login' }),
     (req, res) => {
-        console.log(res);
-        // Successful authentication, redirect to the profile page
-        res.redirect('http://localhost:8003/api/user/profile');
+        const isNew = req.user.isNew;
+        const userId = req.user.user._id;
+        if (isNew) {
+            
+            res.redirect(`http://localhost:8003/api/auth/register/${userId}`);
+        } else {
+            res.redirect('http://localhost:8003/api/user/profile');
+        }
     }
 );
 
@@ -48,7 +51,7 @@ router.post('/send-otp',async(req,res)=>{
 
 router.post('/verify-otp', (req, res) => {
     const { phoneNumber, otp } = req.body;
-    if (otps[phoneNumber] && otps[phoneNumber] === otp) {
+    if (otps[phoneNumber] === otp) {
         delete otps[phoneNumber];
         res.status(200).send('OTP verified successfully');
     } else {

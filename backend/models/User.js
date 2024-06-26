@@ -1,5 +1,5 @@
+import { Timestamp } from "mongodb";
 import mongoose from "mongoose";
-
 const userSchema = mongoose.Schema({
     googleID: {
         type: String,
@@ -69,7 +69,9 @@ const userSchema = mongoose.Schema({
         default: false
     }
 
-})
+},
+{timestamp:true}
+)
 
 const User = mongoose.model('User', userSchema)
 export default User;
